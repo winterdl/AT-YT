@@ -113,13 +113,13 @@ if [ "$DEV" == "Develop" ];then
 echo "  Dùng Dev"
 echo
 pbdev revanced-cli jar -all
-pbdev revanced-patches rvp
+pbdev patches rvp
 #pbdev revanced-integrations apk
 else
 echo "  Dùng Sta"
 echo
 pbsta revanced-cli jar -all
-pbsta revanced-patches rvp
+pbsta patches rvp
 #pbsta revanced-integrations apk
 fi
 
