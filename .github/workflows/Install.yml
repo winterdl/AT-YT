@@ -25,7 +25,7 @@ on:
           - Stable
           - Develop
       FEATURE:
-        description: 'Turn on/off feature on: [-i "feature"], off: [-e "feature"]'
+        description: 'Turn on/off feature on: [-e "feature"], off: [-d "feature"]'
         required: false
         default: '-d "Hide captions button" -d "Hide autoplay button"'
 permissions: write-all
