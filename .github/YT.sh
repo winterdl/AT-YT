@@ -111,14 +111,14 @@ if [ "$DEV" == "Develop" ];then
 echo "  Dùng Dev"
 echo
 pbdev revanced-cli jar -all
-pbdev revanced-patches jar
-pbdev revanced-integrations apk
+pbdev revanced-patches rvp
+#pbdev revanced-integrations apk
 else
 echo "  Dùng Sta"
 echo
 pbsta revanced-cli jar -all
-pbsta revanced-patches jar
-pbsta revanced-integrations apk
+pbsta revanced-patches rvp
+#pbsta revanced-integrations apk
 fi
 
 # kiểm tra tải tool
@@ -200,7 +200,8 @@ fi
 (
 
 echo "▼ Bắt đầu quá trình xây dựng..."
-#java -Djava.io.tmpdir=$HOME -jar $lib1 patch 2>&1
+java -Djava.io.tmpdir=$HOME -jar $lib1 patch 2>&1
+exit
 
 eval "java -Djava.io.tmpdir=$HOME -jar $lib1 patch -b $lib2 -m $lib3 apk/YouTube.apk -o YT.apk "$Tof $Ton $Mro $theme $feature"" 2>&1 | tee Log2.txt
 grep 'SEVERE:' Log2.txt | sed 's|failed:|failed|g' > Log.txt
