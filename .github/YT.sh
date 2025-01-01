@@ -125,8 +125,8 @@ fi
 
 # kiểm tra tải tool
 checkzip "lib/revanced-cli.jar"
-checkzip "lib/revanced-patches.jar"
-checkzip "lib/revanced-integrations.apk"
+#checkzip "lib/revanced-patches.jar"
+#checkzip "lib/revanced-integrations.apk"
 
 echo
 
