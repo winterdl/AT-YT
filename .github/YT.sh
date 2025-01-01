@@ -97,7 +97,7 @@ pbdev revanced-patches patches rvp
 pbdev revanced-patches-template patches rvp
 
 else
-echo "  Dùng Sta"
+echo "  Dùng Sta $TYPE"
 echo
 pbsta revanced-cli revanced-cli jar -all
 pbsta revanced-patches patches rvp
