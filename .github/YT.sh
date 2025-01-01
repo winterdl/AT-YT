@@ -43,7 +43,7 @@ echo "Link: $uak2"
 [ "$AMOLED" == 'true' ] && amoled2='-Amoled'
 [ "$AMOLED" == 'true' ] || theme='-e Theme'
 [ "$TYPE" == 'true' ] && Mro='-e "GmsCore support"'
-
+Mro='-e "GmsCore support"'
 # Xoá lib dựa vào abi
 if [ "$DEVICE" == "arm64-v8a" ];then
 lib="lib/x86/* lib/x86_64/* lib/armeabi-v7a/*"
@@ -183,7 +183,7 @@ fi
 
 echo "▼ Bắt đầu quá trình xây dựng..."
 echo
-eval "java -Djava.io.tmpdir=$HOME -jar $lib1 patch -p $lib2 apk/YouTube.apk -o YT.apk "$Tof $Ton $Mro $theme $feature"" 2>&1 | tee Log2.txt
+eval "java -Djava.io.tmpdir=$HOME -jar $lib1 patch -p $lib2 -p $lib3 apk/YouTube.apk -o YT.apk "$Tof $Ton $Mro $theme $feature"" 2>&1 | tee Log2.txt
 grep 'SEVERE:' Log2.txt | sed 's|failed:|failed|g' > Log.txt
 echo '- Quá trình xây dựng apk xong.' | tee 2.txt
 
