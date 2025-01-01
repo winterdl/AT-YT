@@ -26,9 +26,9 @@ echo "- Url: https://github.com/ReVanced/$1/releases/download/v${Vsion1##*/}/$1-
 if [ "$DEV" == "Develop" ];then
 Vop='-DEV'
 Vop2=D
-vjson="$(Xem https://github.com/ReVanced/revanced-patches/releases | grep -om1 'ReVanced/revanced-patches/releases/tag/.*dev' | cut -d '"' -f1 | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
+#vjson="$(Xem https://github.com/ReVanced/revanced-patches/releases | grep -om1 'ReVanced/revanced-patches/releases/tag/.*dev' | cut -d '"' -f1 | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
 else
-vjson="$(Xem https://github.com/ReVanced/revanced-patches | grep -om1 'ReVanced/revanced-patches/releases/tag/.*\"' | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
+#vjson="$(Xem https://github.com/ReVanced/revanced-patches | grep -om1 'ReVanced/revanced-patches/releases/tag/.*\"' | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
 fi
 
 # tải apk
@@ -44,11 +44,12 @@ echo "Link: $uak2"
 . $HOME/.github/options/YouTube.md
 
 # lấy dữ liệu phiên bản mặc định
-echo "- Lấy dữ liệu phiên bản YouTube..."
+#echo "- Lấy dữ liệu phiên bản YouTube..."
 #Vidon="$(
-Xem "https://github.com/ReVanced/revanced-patches/releases/download/v${vjson##*/}/patches.json" > 1.json
+#Xem "https://github.com/ReVanced/revanced-patches/releases/download/v${vjson##*/}/patches.json" > 1.json
 #| jq -r .[1].compatiblePackages[0].versions[] | tac | head -n1)"
 
+gfffv(){
 while true; do
 fhjfn=$(($fhjfn + 1))
 Vclass="$(jq -r ".[$fhjfn].compatiblePackages[0].name" 1.json 2>/dev/null)"
@@ -57,6 +58,7 @@ if [ "$Vclass" == "com.google.android.youtube" ] && [ "$Vidon" ];then
 break
 fi
 done
+}
 
 # là amoled
 [ "$AMOLED" == 'true' ] && amoled2='-Amoled'
