@@ -25,9 +25,6 @@ echo "- Url: https://github.com/ReVanced/$1/releases/download/v${Vsion1##*/}/$2-
 if [ "$DEV" == "Develop" ];then
 Vop='-DEV'
 Vop2=D
-#vjson="$(Xem https://github.com/ReVanced/revanced-patches/releases | grep -om1 'ReVanced/revanced-patches/releases/tag/.*dev' | cut -d '"' -f1 | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
-#else
-#vjson="$(Xem https://github.com/ReVanced/revanced-patches | grep -om1 'ReVanced/revanced-patches/releases/tag/.*\"' | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
 fi
 
 # tải apk
@@ -41,24 +38,6 @@ echo "Link: $uak2"
 
 # Load dữ liệu cài đặt 
 . $HOME/.github/options/YouTube.md
-
-# lấy dữ liệu phiên bản mặc định
-#echo "- Lấy dữ liệu phiên bản YouTube..."
-#Vidon="$(
-#Xem "https://github.com/ReVanced/revanced-patches/releases/download/v${vjson##*/}/patches.json" > 1.json
-#| jq -r .[1].compatiblePackages[0].versions[] | tac | head -n1)"
-
-Vidon='19.47.53'
-gfffv(){
-while true; do
-fhjfn=$(($fhjfn + 1))
-Vclass="$(jq -r ".[$fhjfn].compatiblePackages[0].name" 1.json 2>/dev/null)"
-Vidon="$(jq -r ".[$fhjfn].compatiblePackages[0].versions[]" 1.json 2>/dev/null | tac | head -n1)"
-if [ "$Vclass" == "com.google.android.youtube" ] && [ "$Vidon" ];then
-break
-fi
-done
-}
 
 # là amoled
 [ "$AMOLED" == 'true' ] && amoled2='-Amoled'
@@ -125,9 +104,9 @@ pbsta revanced-patches-template patches rvp
 fi
 
 # kiểm tra tải tool
-checkzip "lib/revanced-cli.jar"
-checkzip "lib/revanced-patches.jar"
-checkzip "lib/revanced-patches-template.jar"
+checkzip "$lib1"
+checkzip "$lib2"
+checkzip "$lib3"
 echo
 
 echo "- Tải YouTube $VER apk, apks..."
@@ -203,15 +182,11 @@ fi
 
 echo "▼ Bắt đầu quá trình xây dựng..."
 echo
-java -jar $lib1 list-patches --with-packages --with-versions --with-options $lib2
-echo
-echo
 eval "java -Djava.io.tmpdir=$HOME -jar $lib1 patch -p $lib2 -p $lib3 apk/YouTube.apk -o YT.apk "$Tof $Ton $Mro $theme $feature"" 2>&1 | tee Log2.txt
 grep 'SEVERE:' Log2.txt | sed 's|failed:|failed|g' > Log.txt
 echo '- Quá trình xây dựng apk xong.' | tee 2.txt
 
 ) & (
-exit
 
 sleep 5
 zip -qr apk/YouTube.apk -d res/*
