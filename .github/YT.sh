@@ -41,8 +41,8 @@ echo "Link: $uak2"
 
 # là amoled
 [ "$AMOLED" == 'true' ] && amoled2='-Amoled'
-[ "$AMOLED" == 'true' ] || theme='-e "Theme"'
-[ "$TYPE" == 'true' ] && Mro='-e "GmsCore support"'
+[ "$AMOLED" == 'true' ] || theme='-d "Theme"'
+[ "$TYPE" == 'true' ] && Mro='-d "GmsCore support"'
 
 # Xoá lib dựa vào abi
 if [ "$DEVICE" == "arm64-v8a" ];then
