@@ -24,7 +24,9 @@
 
 - See the version that Revanced they support for the latest build.
 
-   > [Revanced](https://github.com/revanced/revanced-patches) | [inotia00](https://github.com/inotia00/revanced-patches)
+   > [Revanced](https://github.com/revanced/revanced-patches) | [Version](https://revanced.app/patches?s=YouTube)
+
+   > [inotia00](https://github.com/inotia00/revanced-patches)
 
 - Additional app for the no-root version
 
