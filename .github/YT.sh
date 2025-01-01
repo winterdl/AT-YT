@@ -2,7 +2,7 @@
 # load dữ liệu 
 lib1="lib/revanced-cli.jar"
 lib2="lib/revanced-patches.jar"
-
+lib3="lib/revanced-patches-template.jar"
 # Tải tool sta
 pbsta(){
 Vsion1="$(Xem https://github.com/ReVanced/$1 | grep -om1 'ReVanced/'$1'/releases/tag/.*\"' | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
@@ -113,17 +113,20 @@ echo "  Dùng Dev"
 echo
 pbdev revanced-cli revanced-cli jar -all
 pbdev revanced-patches patches rvp
+pbdev revanced-patches-template patches rvp
+
 else
 echo "  Dùng Sta"
 echo
-pbdev revanced-cli revanced-cli jar -all
-pbdev revanced-patches patches rvp
+pbsta revanced-cli revanced-cli jar -all
+pbsta revanced-patches patches rvp
+pbsta revanced-patches-template patches rvp
 fi
 
 # kiểm tra tải tool
 checkzip "lib/revanced-cli.jar"
 checkzip "lib/revanced-patches.jar"
-
+checkzip "lib/revanced-patches-template.jar"
 echo
 
 echo "- Tải YouTube $VER apk, apks..."
