@@ -48,6 +48,7 @@ echo "Link: $uak2"
 #Xem "https://github.com/ReVanced/revanced-patches/releases/download/v${vjson##*/}/patches.json" > 1.json
 #| jq -r .[1].compatiblePackages[0].versions[] | tac | head -n1)"
 
+Vidon='19.47.53'
 gfffv(){
 while true; do
 fhjfn=$(($fhjfn + 1))
