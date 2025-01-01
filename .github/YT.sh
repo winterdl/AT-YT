@@ -202,10 +202,8 @@ fi
 (
 
 echo "▼ Bắt đầu quá trình xây dựng..."
-java -Djava.io.tmpdir=$HOME -jar $lib1 patch -p $lib2 -p $lib3 2>&1
 echo
-echo
-java -Djava.io.tmpdir=$HOME -jar $lib1 2>&1
+java -jar $lib1 list-patches --with-packages --with-versions --with-options $lib2
 echo
 echo
 eval "java -Djava.io.tmpdir=$HOME -jar $lib1 patch -p $lib2 -p $lib3 apk/YouTube.apk -o YT.apk "$Tof $Ton $Mro $theme $feature"" 2>&1 | tee Log2.txt
@@ -213,6 +211,7 @@ grep 'SEVERE:' Log2.txt | sed 's|failed:|failed|g' > Log.txt
 echo '- Quá trình xây dựng apk xong.' | tee 2.txt
 
 ) & (
+exit
 
 sleep 5
 zip -qr apk/YouTube.apk -d res/*
