@@ -3,20 +3,26 @@ lib1="lib/revanced-cli.jar"
 lib2="lib/revanced-patches.jar"
 lib3="lib/revanced-integrations.apk"
 
-# Tải tool sta
 pbsta(){
-Vsion1="$(Xem https://github.com/$1 | grep -om1 ''$1'/releases/tag/.*\"' | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
-Taive "https://github.com/$1/releases/download/v${Vsion1##*/}/$2-${Vsion1##*/}$4.$3" "lib/$2.$3"; 
-echo "- Url: https://github.com/$1/releases/download/v${Vsion1##*/}/$2-${Vsion1##*/}$4.$3
+Vsion1="$(Xem https://github.com/inotia00/$1 | grep -om1 'inotia00/'$1'/releases/tag/.*\"' | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
+Taive "https://github.com/inotia00/$1/releases/download/v${Vsion1##*/}/$2-${Vsion1##*/}$4.$3" "lib/$1.jar"; 
+
+echo "- Url: https://github.com/inotia00/$1/releases/download/v${Vsion1##*/}/$2-${Vsion1##*/}$4.$3
+"
+}
+ 
+# tải tool dev
+pbdev(){
+Vsion1="$(Xem https://github.com/inotia00/$1/releases | grep -om1 'inotia00/'$1'/releases/tag/.*dev' | cut -d '"' -f1 | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
+Taive "https://github.com/inotia00/$1/releases/download/v${Vsion1##*/}/$2-${Vsion1##*/}$4.$3" "lib/$1.jar"; 
+
+echo "- Url: https://github.com/inotia00/$1/releases/download/v${Vsion1##*/}/$2-${Vsion1##*/}$4.$3
 "
 }
 
-# tải tool dev
-pbdev(){
-Vsion2="$(Xem https://github.com/$1/releases | grep -om1 ''$1'/releases/tag/.*dev' | cut -d '"' -f1 | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
-Taive "https://github.com/$1/releases/download/v${Vsion2##*/}/$2-${Vsion2##*/}$4.$3" "lib/$2.$3"; }
+
 # Tải json
-vjson="$(Xem https://github.com/inotia00/revanced-patches | grep -om1 'inotia00/revanced-patches/releases/tag/.*\"' | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
+#vjson="$(Xem https://github.com/inotia00/revanced-patches | grep -om1 'inotia00/revanced-patches/releases/tag/.*\"' | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
 
 # tải apk
 TaiYT(){
@@ -32,12 +38,12 @@ echo "Link: $uak2"
 
 # lấy dữ liệu phiên bản mặc định
 echo "- Patches YouTube mới nhất..."
-Vidon="$(Xem "https://github.com/inotia00/revanced-patches/releases/download/v${vjson##*/}/patches.json" | jq -r .[1].compatiblePackages[0].versions[] | tac | head -n1)"
+#Vidon="$(Xem "https://github.com/inotia00/revanced-patches/releases/download/v${vjson##*/}/patches.json" | jq -r .[1].compatiblePackages[0].versions[] | tac | head -n1)"
 
 # là amoled
 [ "$AMOLED" == 'true' ] && amoled2='-Amoled'
-[ "$AMOLED" == 'true' ] || theme='-e Theme'
-[ "$TYPE" == 'true' ] && Mro='-e "GmsCore support"'
+[ "$AMOLED" == 'true' ] || theme='-d Theme'
+[ "$TYPE" == 'true' ] && Mro='-d "GmsCore support"'
 
 # Xoá lib dựa vào abi
 if [ "$DEVICE" == "arm64-v8a" ];then
@@ -64,6 +70,7 @@ VER="$Vidon"
 Kad=Auto
 V=U
 else
+Vidon="$VERSION"
 VER="$VERSION"
 Kad=Edit
 V=N
@@ -82,27 +89,27 @@ fi
 
 echo
 # Tải tool cli
+# Tải tool cli
 echo "- Tải tool cli, patches, integrations..."
 if [ "$DEV" == "Develop" ];then
 echo "  Dùng Dev"
 echo
-pbdev inotia00/revanced-cli revanced-cli jar -all
-pbdev inotia00/revanced-patches revanced-patches jar
-pbdev inotia00/revanced-integrations revanced-integrations apk
+pbdev revanced-cli revanced-cli jar -all
+pbdev revanced-patches patches rvp
+#pbdev revanced-patches-template patches rvp
+
 else
 echo "  Dùng Sta"
 echo
-pbsta inotia00/revanced-cli revanced-cli jar -all
-pbsta inotia00/revanced-patches revanced-patches jar
-pbsta inotia00/revanced-integrations revanced-integrations apk
+pbsta revanced-cli revanced-cli jar -all
+pbsta revanced-patches patches rvp
+#pbsta revanced-patches-template patches rvp
 fi
 
-
 # kiểm tra tải tool
-checkzip "lib/revanced-cli.jar"
-checkzip "lib/revanced-patches.jar"
-checkzip "lib/revanced-integrations.apk"
-
+checkzip "$lib1"
+checkzip "$lib2"
+#checkzip "$lib3"
 echo
 
 echo "- Tải YouTube $VER apk, apks..."
@@ -182,7 +189,7 @@ fi
 #java -Djava.io.tmpdir=$HOME -jar $lib1 patch 2>&1
 
 echo "▼ Bắt đầu quá trình xây dựng..."
-eval "java -Djava.io.tmpdir=$HOME -jar $lib1 patch -b $lib2 -m $lib3 apk/YouTube.apk -o YT.apk "$Tof $Ton $Mro $theme $feature" --unsigned" >> Log2.txt 2>&1
+eval "java -Djava.io.tmpdir=$HOME -jar $lib1 patch -p $lib2 apk/YouTube.apk -o YT.apk "$Tof $Ton $Mro $theme $feature" --unsigned" >> Log2.txt 2>&1
 sed '/WARNING: warn: removing resource/d' Log2.txt
 echo '- Quá trình xây dựng apk xong.' | tee 2.txt
 grep 'SEVERE:' Log2.txt | sed 's|failed:|failed|g' > Log.txt
