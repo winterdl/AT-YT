@@ -2,23 +2,22 @@
 # load dữ liệu 
 lib1="lib/revanced-cli.jar"
 lib2="lib/revanced-patches.jar"
-lib3="lib/revanced-integrations.apk"
-
+lib3="lib/revanced-patches-template.jar"
 # Tải tool sta
 pbsta(){
 Vsion1="$(Xem https://github.com/ReVanced/$1 | grep -om1 'ReVanced/'$1'/releases/tag/.*\"' | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
-Taive "https://github.com/ReVanced/$1/releases/download/v${Vsion1##*/}/$1-${Vsion1##*/}$3.$2" "lib/$1.$2"; 
+Taive "https://github.com/ReVanced/$1/releases/download/v${Vsion1##*/}/$2-${Vsion1##*/}$4.$3" "lib/$1.jar"; 
 
-echo "- Url: https://github.com/ReVanced/$1/releases/download/v${Vsion1##*/}/$1-${Vsion1##*/}$3.$2
+echo "- Url: https://github.com/ReVanced/$1/releases/download/v${Vsion1##*/}/$2-${Vsion1##*/}$4.$3
 "
 }
  
 # tải tool dev
 pbdev(){
 Vsion1="$(Xem https://github.com/ReVanced/$1/releases | grep -om1 'ReVanced/'$1'/releases/tag/.*dev' | cut -d '"' -f1 | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
-Taive "https://github.com/ReVanced/$1/releases/download/v${Vsion1##*/}/$1-${Vsion1##*/}$3.$2" "lib/$1.$2"; 
+Taive "https://github.com/ReVanced/$1/releases/download/v${Vsion1##*/}/$2-${Vsion1##*/}$4.$3" "lib/$1.jar"; 
 
-echo "- Url: https://github.com/ReVanced/$1/releases/download/v${Vsion1##*/}/$1-${Vsion1##*/}$3.$2
+echo "- Url: https://github.com/ReVanced/$1/releases/download/v${Vsion1##*/}/$2-${Vsion1##*/}$4.$3
 "
 }
 
@@ -26,9 +25,6 @@ echo "- Url: https://github.com/ReVanced/$1/releases/download/v${Vsion1##*/}/$1-
 if [ "$DEV" == "Develop" ];then
 Vop='-DEV'
 Vop2=D
-vjson="$(Xem https://github.com/ReVanced/revanced-patches/releases | grep -om1 'ReVanced/revanced-patches/releases/tag/.*dev' | cut -d '"' -f1 | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
-else
-vjson="$(Xem https://github.com/ReVanced/revanced-patches | grep -om1 'ReVanced/revanced-patches/releases/tag/.*\"' | sed -e 's|dev|zzz|g' -e 's|v||g' -e 's|zzz|dev|g' -e 's|\"||g')"
 fi
 
 # tải apk
@@ -38,30 +34,18 @@ uak1="$urrl$(Xem "$urrl/apk/$2" | grep -m1 'downloadButton' | tr ' ' '\n' | grep
 uak2="$urrl$(Xem "$uak1" | grep -m1 '>here<' | tr ' ' '\n' | grep -m1 'href=' | cut -d \" -f2 | sed 's|amp;||')"
 Taive "$uak2" "apk/$1"
 echo "Link: $uak2"
-[ "$(file apk/$1 | grep -cm1 'Zip')" == 1 ] && echo > "apk/$1.txt" || echo "! Lỗi $1" | tee "apk/$1.txt"; }
+# file check
+file "apk/$1" | tee "apk/$1.txt";
+#[ "$(file apk/$1 | grep -cm1 'Zip')" == 1 ] && echo > "apk/$1.txt" || echo "! Lỗi $1" | tee "apk/$1.txt"; 
+}
 
 # Load dữ liệu cài đặt 
 . $HOME/.github/options/YouTube.md
 
-# lấy dữ liệu phiên bản mặc định
-echo "- Lấy dữ liệu phiên bản YouTube..."
-#Vidon="$(
-Xem "https://github.com/ReVanced/revanced-patches/releases/download/v${vjson##*/}/patches.json" > 1.json
-#| jq -r .[1].compatiblePackages[0].versions[] | tac | head -n1)"
-
-while true; do
-fhjfn=$(($fhjfn + 1))
-Vclass="$(jq -r ".[$fhjfn].compatiblePackages[0].name" 1.json 2>/dev/null)"
-Vidon="$(jq -r ".[$fhjfn].compatiblePackages[0].versions[]" 1.json 2>/dev/null | tac | head -n1)"
-if [ "$Vclass" == "com.google.android.youtube" ] && [ "$Vidon" ];then
-break
-fi
-done
-
 # là amoled
 [ "$AMOLED" == 'true' ] && amoled2='-Amoled'
-[ "$AMOLED" == 'true' ] || theme='-e Theme'
-[ "$TYPE" == 'true' ] && Mro='-e "GmsCore support"'
+[ "$AMOLED" == 'true' ] || theme='-d "Theme"'
+[ "$TYPE" == 'true' ] && Mro='-d "GmsCore support"'
 
 # Xoá lib dựa vào abi
 if [ "$DEVICE" == "arm64-v8a" ];then
@@ -88,6 +72,7 @@ VER="$Vidon"
 Kad=Auto$Vop
 V=U$Vop2
 else
+Vidon="$VERSION"
 VER="$VERSION"
 Kad=Edit$Vop
 V=N$Vop2
@@ -110,22 +95,22 @@ echo "- Tải tool cli, patches, integrations..."
 if [ "$DEV" == "Develop" ];then
 echo "  Dùng Dev"
 echo
-pbdev revanced-cli jar -all
-pbdev revanced-patches jar
-pbdev revanced-integrations apk
+pbdev revanced-cli revanced-cli jar -all
+pbdev revanced-patches patches rvp
+pbdev revanced-patches-template patches rvp
+
 else
 echo "  Dùng Sta"
 echo
-pbsta revanced-cli jar -all
-pbsta revanced-patches jar
-pbsta revanced-integrations apk
+pbsta revanced-cli revanced-cli jar -all
+pbsta revanced-patches patches rvp
+pbsta revanced-patches-template patches rvp
 fi
 
 # kiểm tra tải tool
-checkzip "lib/revanced-cli.jar"
-checkzip "lib/revanced-patches.jar"
-checkzip "lib/revanced-integrations.apk"
-
+checkzip "$lib1"
+checkzip "$lib2"
+checkzip "$lib3"
 echo
 
 echo "- Tải YouTube $VER apk, apks..."
@@ -140,8 +125,8 @@ TaiYT 'YouTube1' "$kkk1" & TaiYT 'YouTube2' "$kkk2"
 Loading apk/YouTube1.txt apk/YouTube2.txt
 
 # Xem xét apk
-[ "$(file apk/YouTube1 | grep -cm1 Zip)" == 1 ] || rm -fr apk/YouTube1
-[ "$(file apk/YouTube2 | grep -cm1 Zip)" == 1 ] || rm -fr apk/YouTube2
+[ "$(file apk/YouTube1 | grep -cm1 HTML)" == 1 ] && rm -fr apk/YouTube1
+[ "$(file apk/YouTube2 | grep -cm1 HTML)" == 1 ] && rm -fr apk/YouTube2
 
 if [ -e apk/YouTube1 ];then
 if [ "$(unzip -l apk/YouTube1 | grep -cm1 'base.apk')" == 1 ];then
@@ -163,16 +148,18 @@ mv apk/YouTube2 apk/YouTube.apk
 fi
 fi
 
-
 if [ "$TYPE" == 'true' ];then
 lib='lib/*/*'
-if [ -e apk/YouTube.apks ];then
+if [ -e apk/YouTube.apks/kkkkkk ];then
 echo "- Giải nén base.apk"
 unzip -qo apk/YouTube.apks 'base.apk' -d Tav
 unzip -qo apk/YouTube.apk lib/$DEVICE/* -d Tav
 mv -f Tav/lib/$DEVICE Tav/lib/$ach
 else
+echo "- Giải nén Lib"
 cp apk/YouTube.apk Tav/base.apk
+unzip -qo apk/YouTube.apk lib/$DEVICE/* -d Tav
+mv -f Tav/lib/$DEVICE Tav/lib/$ach
 fi
 fi
 
@@ -201,9 +188,8 @@ fi
 (
 
 echo "▼ Bắt đầu quá trình xây dựng..."
-#java -Djava.io.tmpdir=$HOME -jar $lib1 patch
-eval "java -Djava.io.tmpdir=$HOME -jar $lib1 patch -b $lib2 -m $lib3 apk/YouTube.apk -o YT.apk "$Tof $Ton $Mro $theme $feature" >>Log2.txt 2>&1 "
-sed '/WARNING: warn: removing resource/d' Log2.txt
+echo
+eval "java -Djava.io.tmpdir=$HOME -jar $lib1 patch -p $lib2 -p $lib3 apk/YouTube.apk -o YT.apk "$Mro $theme $Tof $Ton $feature"" 2>&1 | tee Log2.txt
 grep 'SEVERE:' Log2.txt | sed 's|failed:|failed|g' > Log.txt
 echo '- Quá trình xây dựng apk xong.' | tee 2.txt
 
@@ -254,7 +240,7 @@ updateJson=https://github.com/'$GITHUB_REPOSITORY'/releases/download/Up/Up-K'$V$
 echo '{
 "version": "'$VER'",
 "versionCode": "'${VER//./}'",
-"zipUrl": "https://github.com/'$GITHUB_REPOSITORY'/releases/download/K'$V$VER'/YT-Magisk-'$VER'-'$ach$amoled2'.Zip",
+"zipUrl": "https://github.com/'$GITHUB_REPOSITORY'/releases/download/K'$V$VER'/YT-Hybrid-'$VER'-'$ach$amoled2'.Zip",
 "changelog": "https://github.com/'$GITHUB_REPOSITORY'/releases/download/Up/Up-K'$V'notes.json"
 }' > Up-K$V$ach$amoled2.json
 
@@ -262,6 +248,6 @@ echo -e 'Update '$(date)' \nYouTube: '$VER' \nVersion: '${VER//./}' \nAuto by ka
 
 # Tạo module magisk
 cd $HOME/.github/Modun
-zip -qr $HOME/Up/YT-Magisk-$VER-$ach$amoled2.zip *
+zip -qr $HOME/Up/YT-Hybrid-$VER-$ach$amoled2.zip *
 cd $HOME
 ls Up

@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       VERSION:
-        description: 'Example: 18.15.40'
+        description: 'Example: 19.44.39'
         required: false
-        default: 'Auto'
+        default: '19.44.39'
       DEVICE:
         description: 'Select device'
         required: false

@@ -13,14 +13,11 @@ mkdir -p apk lib tmp jar Tav Up rmp
 User="User-Agent: Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36"
 
 # Tính năng 
-for kskn in $FEATURE; do
-echo "-e \"$kskn\"" >> feature
-done
-[ -e feature ] && feature="$(cat feature)"
+feature="$FEATURE"
 
 # khu vực fusion 
-Taive () { curl -s -L -N -k --dns-servers "1.1.1.1,8.8.8.8,8.8.4.4" -H "$User" --connect-timeout 20 "$1" -o "$2"; }
-Xem () { curl -s -G -L -N -k --dns-servers "1.1.1.1,8.8.8.8,8.8.4.4" -H "$User" --connect-timeout 20 "$1"; }
+Taive () { curl -L -N -k -H "$User" --connect-timeout 20 "$1" -o "$2"; }
+Xem () { curl -s -G -L -N -k -H "$User" --connect-timeout 20 "$1"; }
 XHex(){ xxd -p "$@" | tr -d "\n" | tr -d ' '; }
 ZHex(){ xxd -r -p "$@"; }
 apksign () { java -jar $HOME/.github/Tools/apksigner.jar sign --cert "$HOME/.github/Tools/testkey.x509.pem" --key "$HOME/.github/Tools/testkey.pk8" --out "$2" "$1"; }
@@ -36,7 +33,7 @@ break
 else
 sleep 1
 gfdgv=$(($gfdgv + 1))
-if [ "$gfdgv" -ge 120 ];then
+if [ "$gfdgv" -ge 200 ];then
 echo "- Quá thời gian cho phép, vì $1 $2...";
 break
 fi
